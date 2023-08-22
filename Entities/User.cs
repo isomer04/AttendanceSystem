@@ -12,6 +12,7 @@ namespace AttendanceSystem.Entities
         public string Username { get; set; }
         public string Password { get; set; }
         public UserType UserType { get; set; }
+        public string HashedPassword { get; internal set; }
     }
 
     public enum UserType

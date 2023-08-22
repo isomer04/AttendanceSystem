@@ -15,6 +15,11 @@ namespace AttendanceSystem.Data
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
 
+
+         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("connection string should be here");
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure entity relationships and constraints here
