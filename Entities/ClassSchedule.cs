@@ -13,6 +13,7 @@ namespace AttendanceSystem.Entities
     public TimeSpan EndTime { get; set; }
     public int TotalClasses { get; set; }
     public int CourseId { get; set; }
+
 }
 
 }

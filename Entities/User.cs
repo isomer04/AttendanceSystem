@@ -15,6 +15,16 @@ namespace AttendanceSystem.Entities
         public string HashedPassword { get; internal set; }
     }
 
+
+    // Teacher.cs
+    // public class Teacher : User { }
+
+    // // Student.cs
+    // public class Student : User { }
+
+    // // Admin.cs
+    // public class Admin : User { }
+
     public enum UserType
 {
     Admin,
