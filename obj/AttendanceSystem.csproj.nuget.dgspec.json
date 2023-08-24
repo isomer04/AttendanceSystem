@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj": {}
+    "C:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj": {}
   },
   "projects": {
-    "c:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj": {
+    "C:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj",
+        "projectUniqueName": "C:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj",
         "projectName": "AttendanceSystem",
-        "projectPath": "c:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj",
+        "projectPath": "C:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj",
         "packagesPath": "C:\\Users\\isome\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\obj\\",
+        "outputPath": "C:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\isome\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AttendanceSystem.Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace AttendanceSystem.Data
@@ -21,9 +22,26 @@ namespace AttendanceSystem.Data
 
          protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("connection string should be here");
 
-            // Server=DESKTOP-47QN2Q4\SQLEXPRESS;Database=myDataBase;User Id=isomer;Password=123456;TrustServerCertificate=True
+            // Server=DESKTOP-47QN2Q4\SQLEXPRESS;Database=myDataBase;User Id=isomer2;Password=isomermE@.12345678;TrustServerCertificate=True
+
+            string connectionString = "Server=DESKTOP-47QN2Q4\\SQLEXPRESS;Database=attendenceSystem;User Id=isomer2;Password=isomermE@.12345678;TrustServerCertificate=True";
+
+            // optionsBuilder.UseSqlServer(connectionString);
+
+            optionsBuilder.UseSqlServer(connectionString, builder =>
+            {
+                builder.EnableRetryOnFailure(
+                    maxRetryCount: 3,
+                    maxRetryDelay: TimeSpan.FromSeconds(30),
+                    errorNumbersToAdd: new[] { 50000, 12345 }
+                );
+            });
+
+
+
+            // SqlConnection sqlConnection = new  SqlConnection(connectionString);
+
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

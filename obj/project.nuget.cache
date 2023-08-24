@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tzMXfbHaq+ngPxMZLjYji/OvdxKEIK28F0UpcbBxsIUMZ5yqU841Hr5FwEb5pCpz2yc/apqnaMjNwRgqq+u1kg==",
+  "dgSpecHash": "bYatFT/CgJlXQ2mHSkHQIwBPzL547znber64QXOLyeGbFF6awMBbA7cDpxvycCoWHBIkpg0Tn5VZK7QO9quULw==",
   "success": true,
-  "projectFilePath": "c:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj",
+  "projectFilePath": "C:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\isome\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\isome\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
