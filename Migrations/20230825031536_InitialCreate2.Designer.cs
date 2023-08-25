@@ -4,6 +4,7 @@ using AttendanceSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AttendanceSystem.Migrations
 {
     [DbContext(typeof(AttendanceDbContext))]
-    partial class AttendanceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230825031536_InitialCreate2")]
+    partial class InitialCreate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,16 +33,7 @@ namespace AttendanceSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ClassNumber")
-                        .HasColumnType("int");
-
                     b.Property<int>("ClassScheduleId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EnrollmentId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsPresent")
@@ -49,8 +43,6 @@ namespace AttendanceSystem.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EnrollmentId");
 
                     b.ToTable("Attendances");
                 });
@@ -80,9 +72,6 @@ namespace AttendanceSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId")
-                        .IsUnique();
-
                     b.ToTable("ClassSchedules");
                 });
 
@@ -100,9 +89,6 @@ namespace AttendanceSystem.Migrations
 
                     b.Property<decimal>("Fees")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("TeacherId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -160,26 +146,6 @@ namespace AttendanceSystem.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AttendanceSystem.Entities.Attendance", b =>
-                {
-                    b.HasOne("AttendanceSystem.Entities.Enrollment", "Enrollment")
-                        .WithMany()
-                        .HasForeignKey("EnrollmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Enrollment");
-                });
-
-            modelBuilder.Entity("AttendanceSystem.Entities.ClassSchedule", b =>
-                {
-                    b.HasOne("AttendanceSystem.Entities.Course", null)
-                        .WithOne("ClassSchedules")
-                        .HasForeignKey("AttendanceSystem.Entities.ClassSchedule", "CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("AttendanceSystem.Entities.Enrollment", b =>
                 {
                     b.HasOne("AttendanceSystem.Entities.Course", "Course")
@@ -197,12 +163,6 @@ namespace AttendanceSystem.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("AttendanceSystem.Entities.Course", b =>
-                {
-                    b.Navigation("ClassSchedules")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

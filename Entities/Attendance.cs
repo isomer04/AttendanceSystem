@@ -11,6 +11,10 @@ namespace AttendanceSystem.Entities
         public int StudentId { get; set; }
         public int ClassScheduleId { get; set; }
         public bool IsPresent { get; set; }
+        public int EnrollmentId { get; internal set; }
+        public DateTime Date { get; internal set; }
+        public int ClassNumber { get; internal set; }
+        public Enrollment Enrollment { get; internal set; }
     }
 
 }

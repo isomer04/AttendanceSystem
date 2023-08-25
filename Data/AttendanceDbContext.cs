@@ -25,18 +25,23 @@ namespace AttendanceSystem.Data
 
             // Server=DESKTOP-47QN2Q4\SQLEXPRESS;Database=myDataBase;User Id=isomer2;Password=isomermE@.12345678;TrustServerCertificate=True
 
+
             string connectionString = "Server=DESKTOP-47QN2Q4\\SQLEXPRESS;Database=attendenceSystem;User Id=isomer2;Password=isomermE@.12345678;TrustServerCertificate=True";
 
             // optionsBuilder.UseSqlServer(connectionString);
-
-            optionsBuilder.UseSqlServer(connectionString, builder =>
+            if(!optionsBuilder.IsConfigured)
             {
-                builder.EnableRetryOnFailure(
-                    maxRetryCount: 3,
-                    maxRetryDelay: TimeSpan.FromSeconds(30),
-                    errorNumbersToAdd: new[] { 50000, 12345 }
-                );
-            });
+                optionsBuilder.UseSqlServer(connectionString, builder =>
+                {
+                    builder.EnableRetryOnFailure(
+                        maxRetryCount: 3,
+                        maxRetryDelay: TimeSpan.FromSeconds(30),
+                        errorNumbersToAdd: new[] { 50000, 12345 }
+                    );
+                });
+            }
+
+            
 
 
 

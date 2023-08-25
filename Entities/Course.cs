@@ -10,6 +10,7 @@ namespace AttendanceSystem.Entities
         public int Id { get; set; }
         public string CourseName { get; set; }
         public decimal Fees { get; set; }
-
+        public ClassSchedule ClassSchedules { get; internal set; }
+        public int TeacherId { get; internal set; }
     }
 }
