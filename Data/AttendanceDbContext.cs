@@ -12,8 +12,8 @@ namespace AttendanceSystem.Data
     {
         public DbSet<User> Users { get; set; }
 
-        // public DbSet<Teacher> Teachers { get; set; }
-        // public DbSet<Student> Students { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Student> Students { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<ClassSchedule> ClassSchedules { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
@@ -50,8 +50,20 @@ namespace AttendanceSystem.Data
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+        
         {
+
+            base.OnModelCreating(modelBuilder);
             // Configure entity relationships and constraints here
+
+
+
+            modelBuilder.Entity<User>()
+                .HasDiscriminator<string>("UserType")  // Use a string discriminator column
+                .HasValue<Admin>("Admin")
+                .HasValue<Teacher>("Teacher")
+                .HasValue<Student>("Student");
         }
     }
 }

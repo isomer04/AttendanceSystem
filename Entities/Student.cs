@@ -7,6 +7,7 @@ namespace AttendanceSystem.Entities
 {
     public class Student : User
     {
-        
+        public ICollection<Enrollment> Enrollments { get; set; }
+
     }
 }

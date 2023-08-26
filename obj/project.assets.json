@@ -3419,6 +3419,7 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
+      "Microsoft.EntityFrameworkCore >= 7.0.10",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.10",
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.10"
     ]
@@ -3429,11 +3430,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj",
+      "projectUniqueName": "C:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj",
       "projectName": "AttendanceSystem",
-      "projectPath": "c:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj",
+      "projectPath": "C:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\AttendanceSystem.csproj",
       "packagesPath": "C:\\Users\\isome\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\obj\\",
+      "outputPath": "C:\\Users\\isome\\Desktop\\csharp\\AttendanceSystem\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\isome\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -3462,6 +3463,10 @@
       "net7.0": {
         "targetAlias": "net7.0",
         "dependencies": {
+          "Microsoft.EntityFrameworkCore": {
+            "target": "Package",
+            "version": "[7.0.10, )"
+          },
           "Microsoft.EntityFrameworkCore.Design": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",

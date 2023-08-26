@@ -7,6 +7,6 @@ namespace AttendanceSystem.Entities
 {
     public class Admin : User
     {
-        
+
     }
 }
