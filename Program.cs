@@ -8,37 +8,6 @@ namespace AttendanceSystem
 {
     class Program
     {
-        // static void Main(string[] args)
-        // {
-        //     User loggedInUser = AuthenticateUser();
-
-        //     if (loggedInUser != null)
-        //     {
-        //         Console.WriteLine($"Welcome, {loggedInUser.Name}!");
-
-        //         switch (loggedInUser.UserType)
-        //         {
-        //             case UserType.Admin:
-        //                 // Call admin menu function
-        //                 ShowAdminMenu();
-        //                 break;
-        //             case UserType.Teacher:
-        //                 // Call teacher menu function
-        //                 ShowTeacherMenu(loggedInUser);
-        //                 break;
-        //             case UserType.Student:
-        //                 // Call student menu function
-        //                 ShowStudentMenu(loggedInUser);
-        //                 break;
-        //             default:
-        //                 Console.WriteLine("Unknown user type.");
-        //                 break;
-        //         }
-        //     }
-
-
-        // }
-
         static void Main(string[] args)
         {
             User loggedInUser = AuthenticateUser();
@@ -91,14 +60,15 @@ namespace AttendanceSystem
 
         static void ShowAdminMenu()
         {
-            Console.WriteLine("Admin Menu");
+            Console.WriteLine("\nAdmin Menu");
             Console.WriteLine("1. Create Teacher");
             Console.WriteLine("2. Create Student");
             Console.WriteLine("3. Create Course");
             Console.WriteLine("4. Assign Teacher to Course");
             Console.WriteLine("5. Assign Student to Course");
             Console.WriteLine("6. Set Class Schedule");
-            Console.WriteLine("7. Exit");
+            Console.WriteLine("7. List of courses");
+            Console.WriteLine("8. Exit");
 
             int choice = int.Parse(Console.ReadLine());
 
@@ -123,6 +93,9 @@ namespace AttendanceSystem
                     SetClassSchedule();
                     break;
                 case 7:
+                    ListCourses();
+                    break;
+                case 8:
                     Environment.Exit(0);
                     break;
                 default:
@@ -137,7 +110,6 @@ namespace AttendanceSystem
 
             if (teacher != null)
             {
-                Console.WriteLine($"Welcome, {teacher.Name}!");
 
                 Console.WriteLine("Teacher Menu");
                 Console.WriteLine("1. Check Attendance Reports");
@@ -170,9 +142,7 @@ namespace AttendanceSystem
 
             if (student != null)
             {
-                Console.WriteLine($"Welcome, {student.Name}!");
-
-                Console.WriteLine("Student Menu");
+                Console.WriteLine("\nStudent Menu");
                 Console.WriteLine("1. Give Attendance");
                 Console.WriteLine("2. Exit");
 
@@ -220,8 +190,10 @@ namespace AttendanceSystem
                 context.Teachers.Add(teacher);
                 context.SaveChanges();
 
-                Console.WriteLine("Teacher created successfully.");
+                Console.WriteLine("Teacher created successfully.  \n");
             }
+            ShowAdminMenu();
+
         }
 
         static void CreateStudent()
@@ -249,6 +221,8 @@ namespace AttendanceSystem
 
                 Console.WriteLine("Student created successfully.");
             }
+            ShowAdminMenu();
+
         }
 
         static void CreateCourse()
@@ -272,6 +246,8 @@ namespace AttendanceSystem
 
                 Console.WriteLine("Course created successfully.");
             }
+            ShowAdminMenu();
+
         }
 
         static void AssignTeacherToCourse()
@@ -310,6 +286,8 @@ namespace AttendanceSystem
                     Console.WriteLine("Teacher not found.");
                 }
             }
+            ShowAdminMenu();
+
         }
 
         static void AssignStudentToCourse()
@@ -355,6 +333,8 @@ namespace AttendanceSystem
                     Console.WriteLine("Student not found.");
                 }
             }
+            ShowAdminMenu();
+
         }
 
         static void SetClassSchedule()
@@ -409,6 +389,8 @@ namespace AttendanceSystem
                     Console.WriteLine("Invalid course ID.");
                 }
             }
+            ShowAdminMenu();
+
         }
 
         static void CheckAttendanceReports(Teacher teacher)
@@ -446,6 +428,7 @@ namespace AttendanceSystem
                     Console.WriteLine("Invalid course ID.");
                 }
             }
+
         }
 
         static void GiveAttendance(Student student)
