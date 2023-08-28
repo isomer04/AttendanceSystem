@@ -13,10 +13,8 @@ namespace AttendanceSystem.Entities
 
         public int? TeacherId { get; set; }
         public Teacher Teacher { get; set; }
-        // public ClassSchedule ClassSchedules { get; internal set; }
 
         public ICollection<Enrollment> Enrollments { get; set; }
         public ICollection<ClassSchedule> ClassSchedules { get; set; }
-        // public int TeacherId { get; internal set; }
     }
 }

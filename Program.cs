@@ -1,8 +1,7 @@
-﻿using System;
-using AttendanceSystem.Data;
+﻿using AttendanceSystem.Data;
 using AttendanceSystem.Entities;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace AttendanceSystem
 {
@@ -395,11 +394,30 @@ namespace AttendanceSystem
                         Console.Write($"Enter day for schedule {i} (e.g., Monday, Tuesday, ...): ");
                         string day = Console.ReadLine();
 
-                        Console.Write($"Enter start time for schedule {i} (e.g., 08:00(00:00:00 - 23:59:59): ");
-                        TimeSpan startTime = TimeSpan.Parse(Console.ReadLine());
+                        //Console.Write($"Enter start time for schedule {i} (HH:mm): ");
+                        //string startTimeStr = Console.ReadLine();
+                        //Console.WriteLine($"Debug: startTimeStr = {startTimeStr}");
+                        //TimeSpan startTime = TimeSpan.ParseExact(startTimeStr, "HH:mm", CultureInfo.InvariantCulture);
 
-                        Console.Write($"Enter end time for schedule {i} (e.g., 10:00 ((00:00:00 - 23:59:59): ");
-                        TimeSpan endTime = TimeSpan.Parse(Console.ReadLine());
+                        bool startTimeParsedSuccessfully;
+                        TimeSpan startTime;
+
+                        Console.Write($"Enter start time for schedule {i} (hh:mm:ss): ");
+                        string startTimeStr = Console.ReadLine();
+
+                        startTimeParsedSuccessfully = TimeSpan.TryParseExact(startTimeStr, "hh\\:mm\\:ss", CultureInfo.InvariantCulture, out startTime);
+
+                        if (!startTimeParsedSuccessfully)
+                        {
+                            Console.WriteLine("The start time was not in the correct format.");
+                        }
+
+                        Console.Write($"Enter end time for schedule {i} (hh:mm:ss): ");
+                        string endTimeStr = Console.ReadLine();
+                        Console.WriteLine($"Debug: endTimeStr = {endTimeStr}");
+                        TimeSpan endTime = TimeSpan.ParseExact(endTimeStr, "hh\\:mm\\:ss", CultureInfo.InvariantCulture);
+
+
 
                         Console.Write($"Enter total classes for schedule {i}: ");
                         int totalClasses = int.Parse(Console.ReadLine());
@@ -426,8 +444,8 @@ namespace AttendanceSystem
                 }
             }
             ShowAdminMenu();
-
         }
+
 
         static void ShowClassSchedules()
         {
@@ -532,8 +550,7 @@ namespace AttendanceSystem
                             {
                                 EnrollmentId = student.Enrollments.First(e => e.CourseId == selectedCourse.Id).Id,
                                 Date = today,
-                                ClassNumber = classSchedule.ClassNumber, // Set the class number appropriately
-                                IsPresent = true // You can implement attendance marking logic here
+                                ClassNumber = classSchedule.ClassNumber, 
                             };
 
                             context.Attendances.Add(attendance);
@@ -555,6 +572,8 @@ namespace AttendanceSystem
                             var nextClassDateTime = today.Date.Add(nextClassSchedule.StartTime);
                             string dayName = nextClassDateTime.DayOfWeek.ToString();
                             Console.WriteLine($"No classes are currently scheduled. Next class is scheduled on {dayName}, {nextClassDateTime:MM/dd/yyyy} at {nextClassSchedule.StartTime}.");
+                            Console.WriteLine($"Current date and time is: {DateTime.Now:MM/dd/yyyy hh:mm tt}");
+
                         }
                         else
                         {
@@ -600,7 +619,6 @@ namespace AttendanceSystem
                     Console.WriteLine($"Course ID: {course.Id}, Course Name: {course.CourseName}");
                 }
             }
-            ShowAdminMenu();
 
         }
 
@@ -837,7 +855,6 @@ namespace AttendanceSystem
         {
             using (var context = new AttendanceDbContext())
             {
-                ListTeachers(); // Display the list of teachers first
                 Console.Write("Enter the ID of the teacher to remove: ");
                 int teacherId = int.Parse(Console.ReadLine());
 
@@ -859,7 +876,6 @@ namespace AttendanceSystem
         {
             using (var context = new AttendanceDbContext())
             {
-                ListStudents(); // Display the list of students first
                 Console.Write("Enter the ID of the student to remove: ");
                 int studentId = int.Parse(Console.ReadLine());
 

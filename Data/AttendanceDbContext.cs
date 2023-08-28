@@ -20,16 +20,13 @@ namespace AttendanceSystem.Data
         public DbSet<Attendance> Attendances { get; set; }
 
 
-         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            // Server=DESKTOP-47QN2Q4\SQLEXPRESS;Database=myDataBase;User Id=isomer2;Password=isomermE@.12345678;TrustServerCertificate=True
 
+            string connectionString = "Server=DESKTOP-47QN2Q4\\SQLEXPRESS;Database=attendenceSystem;User Id=isomer2;Password=isomermE@.12345678;TrustServerCertificate=True"; //TODO: Needs to move this in the appsettings.json file
 
-            string connectionString = "Server=DESKTOP-47QN2Q4\\SQLEXPRESS;Database=attendenceSystem;User Id=isomer2;Password=isomermE@.12345678;TrustServerCertificate=True";
-
-            // optionsBuilder.UseSqlServer(connectionString);
-            if(!optionsBuilder.IsConfigured)
+            if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(connectionString, builder =>
                 {
@@ -41,22 +38,15 @@ namespace AttendanceSystem.Data
                 });
             }
 
-            
-
-
-
-            // SqlConnection sqlConnection = new  SqlConnection(connectionString);
 
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 
-        
+
         {
 
             base.OnModelCreating(modelBuilder);
-            // Configure entity relationships and constraints here
-
 
 
             modelBuilder.Entity<User>()
