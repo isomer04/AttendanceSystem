@@ -2,7 +2,7 @@
 using AttendanceSystem.Data;
 using AttendanceSystem.Entities;
 using System.Linq;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace AttendanceSystem
 {
@@ -68,7 +68,16 @@ namespace AttendanceSystem
             Console.WriteLine("5. Assign Student to Course");
             Console.WriteLine("6. Set Class Schedule");
             Console.WriteLine("7. List of courses");
-            Console.WriteLine("8. Exit");
+            Console.WriteLine("8. List of teachers");
+            Console.WriteLine("9. List of students");
+            Console.WriteLine("10. Show class Schedule");
+            Console.WriteLine("11. Update Teacher");
+            Console.WriteLine("12. Update Student");
+            Console.WriteLine("13. Update Course");
+            Console.WriteLine("14. Delete Teacher");
+            Console.WriteLine("15. Delete Student");
+            Console.WriteLine("16. Delete Course");
+            Console.WriteLine("99. Exit");
 
             int choice = int.Parse(Console.ReadLine());
 
@@ -96,6 +105,33 @@ namespace AttendanceSystem
                     ListCourses();
                     break;
                 case 8:
+                    ListTeachers();
+                    break;
+                case 9:
+                    ListStudents();
+                    break;
+                case 10:
+                    ShowClassSchedules();
+                    break;
+                case 11:
+                    UpdateTeacher();
+                    break;
+                case 12:
+                    UpdateStudent();
+                    break;
+                case 13:
+                    UpdateCourse();
+                    break;
+                case 14:
+                    DeleteTeacher();
+                    break;
+                case 15:
+                    DeleteStudent();
+                    break;
+                case 16:
+                    DeleteCourse();
+                    break;
+                case 99:
                     Environment.Exit(0);
                     break;
                 default:
@@ -104,13 +140,13 @@ namespace AttendanceSystem
             }
         }
 
+
         static void ShowTeacherMenu(User loggedInUser)
         {
             Teacher teacher = GetTeacherByUsername(loggedInUser.Username);
 
             if (teacher != null)
             {
-
                 Console.WriteLine("Teacher Menu");
                 Console.WriteLine("1. Check Attendance Reports");
                 Console.WriteLine("2. Exit");
@@ -359,10 +395,10 @@ namespace AttendanceSystem
                         Console.Write($"Enter day for schedule {i} (e.g., Monday, Tuesday, ...): ");
                         string day = Console.ReadLine();
 
-                        Console.Write($"Enter start time for schedule {i} (e.g., 08:00 AM): ");
+                        Console.Write($"Enter start time for schedule {i} (e.g., 08:00(00:00:00 - 23:59:59): ");
                         TimeSpan startTime = TimeSpan.Parse(Console.ReadLine());
 
-                        Console.Write($"Enter end time for schedule {i} (e.g., 10:00 AM): ");
+                        Console.Write($"Enter end time for schedule {i} (e.g., 10:00 ((00:00:00 - 23:59:59): ");
                         TimeSpan endTime = TimeSpan.Parse(Console.ReadLine());
 
                         Console.Write($"Enter total classes for schedule {i}: ");
@@ -391,6 +427,36 @@ namespace AttendanceSystem
             }
             ShowAdminMenu();
 
+        }
+
+        static void ShowClassSchedules()
+        {
+            using (var context = new AttendanceDbContext())
+            {
+                Console.WriteLine("Available Courses:");
+                ListCourses();
+
+                Console.Write("Enter course ID to view class schedules: ");
+                int courseId = int.Parse(Console.ReadLine());
+
+                var course = context.Courses.Include(c => c.ClassSchedules).FirstOrDefault(c => c.Id == courseId);
+
+                if (course != null)
+                {
+                    Console.WriteLine($"Class Schedules for Course: {course.CourseName}");
+
+                    foreach (var schedule in course.ClassSchedules)
+                    {
+                        Console.WriteLine($"Day: {schedule.Day}, Start Time: {schedule.StartTime}, End Time: {schedule.EndTime}, Total Classes: {schedule.TotalClasses}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid course ID.");
+                }
+            }
+
+            ShowAdminMenu();
         }
 
         static void CheckAttendanceReports(Teacher teacher)
@@ -478,7 +544,23 @@ namespace AttendanceSystem
                     }
                     else
                     {
-                        Console.WriteLine("It's not the class time or there are no classes scheduled for today.");
+
+                        var nextClassSchedule = context.ClassSchedules
+                        .Where(cs => cs.CourseId == selectedCourse.Id && cs.StartTime > today.TimeOfDay)
+                        .OrderBy(cs => cs.StartTime)
+                        .FirstOrDefault();
+
+                        if (nextClassSchedule != null)
+                        {
+                            var nextClassDateTime = today.Date.Add(nextClassSchedule.StartTime);
+                            string dayName = nextClassDateTime.DayOfWeek.ToString();
+                            Console.WriteLine($"No classes are currently scheduled. Next class is scheduled on {dayName}, {nextClassDateTime:MM/dd/yyyy} at {nextClassSchedule.StartTime}.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("There are no classes scheduled for this course.");
+                        }
+                        //Console.WriteLine("It's not the class time or there are no classes scheduled for today.");
                     }
                 }
                 else
@@ -504,6 +586,10 @@ namespace AttendanceSystem
             }
         }
 
+
+
+
+
         static void ListCourses()
         {
             using (var context = new AttendanceDbContext())
@@ -514,14 +600,307 @@ namespace AttendanceSystem
                     Console.WriteLine($"Course ID: {course.Id}, Course Name: {course.CourseName}");
                 }
             }
+            ShowAdminMenu();
+
+        }
+
+        static void ListTeachers()
+        {
+            using (var context = new AttendanceDbContext())
+            {
+                var teachers = context.Teachers.ToList();
+                Console.WriteLine("List of Teachers:");
+                foreach (var teacher in teachers)
+                {
+                    Console.WriteLine($"Teacher ID: {teacher.Id}, Name: {teacher.Name}");
+                }
+            }
+            ShowAdminMenu();
+
+        }
+
+        static void ListStudents()
+        {
+            using (var context = new AttendanceDbContext())
+            {
+                var students = context.Students.ToList();
+                Console.WriteLine("List of Students:");
+                foreach (var student in students)
+                {
+                    Console.WriteLine($"Student ID: {student.Id}, Name: {student.Name}");
+                }
+            }
+            ShowAdminMenu();
+
+        }
+
+
+
+        static void UpdateTeacher()
+        {
+            using (var context = new AttendanceDbContext())
+            {
+                Console.Write("Enter teacher's username to update: ");
+                string username = Console.ReadLine();
+
+                var teacher = context.Teachers.Include(t => t.Courses).FirstOrDefault(t => t.Username == username);
+
+                if (teacher != null)
+                {
+                    Console.Write("Enter new name: ");
+                    teacher.Name = Console.ReadLine();
+
+                    // Update or remove assigned courses
+                    Console.WriteLine("Assigned Courses:");
+                    foreach (var course in teacher.Courses)
+                    {
+                        Console.WriteLine($"Course ID: {course.Id}, Course Name: {course.CourseName}");
+                    }
+
+                    Console.Write("Enter course ID to update or remove (0 to skip): ");
+                    int courseId = int.Parse(Console.ReadLine());
+
+                    if (courseId != 0)
+                    {
+                        var course = teacher.Courses.FirstOrDefault(c => c.Id == courseId);
+
+                        if (course != null)
+                        {
+                            Console.WriteLine("Do you want to (U)pdate or (R)emove the course?");
+                            string choice = Console.ReadLine().ToLower();
+
+                            if (choice == "u")
+                            {
+                                Console.Write("Enter new course name: ");
+                                course.CourseName = Console.ReadLine();
+
+                                Console.Write("Enter new course fees: ");
+                                course.Fees = decimal.Parse(Console.ReadLine());
+                            }
+                            else if (choice == "r")
+                            {
+                                teacher.Courses.Remove(course);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid choice.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Course not found.");
+                        }
+                    }
+
+                    context.SaveChanges();
+                    Console.WriteLine("Teacher updated successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Teacher not found.");
+                }
+            }
+
+            ShowAdminMenu();
+        }
+
+        static void UpdateStudent()
+        {
+            using (var context = new AttendanceDbContext())
+            {
+                Console.Write("Enter student's username to update: ");
+                string username = Console.ReadLine();
+
+                var student = context.Students.Include(s => s.Enrollments).FirstOrDefault(s => s.Username == username);
+
+                if (student != null)
+                {
+                    Console.Write("Enter new name: ");
+                    student.Name = Console.ReadLine();
+
+                    // Enroll in or remove from courses
+                    Console.WriteLine("Enrolled Courses:");
+                    foreach (var enrollment in student.Enrollments)
+                    {
+                        if (enrollment.Course != null)
+                        {
+                            Console.WriteLine($"Course ID: {enrollment.Course.Id}, Course Name: {enrollment.Course.CourseName}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Enrollment with null course found.");
+                        }
+                    }
+
+
+                    Console.Write("Enter course ID to enroll or remove (0 to skip): ");
+                    int courseId = int.Parse(Console.ReadLine());
+
+                    if (courseId != 0)
+                    {
+                        var enrollment = student.Enrollments.FirstOrDefault(e => e.Course != null && e.Course.Id == courseId);
+
+                        if (enrollment != null)
+                        {
+                            Console.WriteLine("Do you want to (E)nroll or (R)emove from the course?");
+                            string choice = Console.ReadLine().ToLower();
+
+                            if (choice == "e")
+                            {
+                                // Check if student is already enrolled
+                                if (student.Enrollments.Any(e => e.Course.Id == courseId))
+                                {
+                                    Console.WriteLine("Student is already enrolled in this course.");
+                                }
+                                else
+                                {
+                                    var course = context.Courses.FirstOrDefault(c => c.Id == courseId);
+                                    if (course != null)
+                                    {
+                                        var newEnrollment = new Enrollment
+                                        {
+                                            StudentId = student.Id,
+                                            CourseId = course.Id,
+                                            EnrollmentDate = DateTime.Now
+                                        };
+                                        context.Enrollments.Add(newEnrollment);
+                                        Console.WriteLine("Student enrolled in the course.");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Course not found.");
+                                    }
+                                }
+                            }
+                            else if (choice == "r")
+                            {
+                                student.Enrollments.Remove(enrollment);
+                                Console.WriteLine("Student removed from the course.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid choice.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Course enrollment not found.");
+                        }
+                    }
+
+                    context.SaveChanges();
+                    Console.WriteLine("Student updated successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Student not found.");
+                }
+            }
+
+            ShowAdminMenu();
         }
 
 
 
 
+        static void UpdateCourse()
+        {
+            using (var context = new AttendanceDbContext())
+            {
+                Console.Write("Enter course ID to update: ");
+                int courseId = int.Parse(Console.ReadLine());
 
+                var course = context.Courses.FirstOrDefault(c => c.Id == courseId);
+
+                if (course != null)
+                {
+                    Console.Write("Enter new course name: ");
+                    course.CourseName = Console.ReadLine();
+
+                    Console.Write("Enter new course fees (only number like 300): ");
+                    course.Fees = decimal.Parse(Console.ReadLine());
+
+                    context.SaveChanges();
+                    Console.WriteLine("Course updated successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Course not found.");
+                }
+            }
+
+            ShowAdminMenu();
+        }
+
+
+        static void DeleteTeacher()
+        {
+            using (var context = new AttendanceDbContext())
+            {
+                ListTeachers(); // Display the list of teachers first
+                Console.Write("Enter the ID of the teacher to remove: ");
+                int teacherId = int.Parse(Console.ReadLine());
+
+                var teacher = context.Teachers.FirstOrDefault(t => t.Id == teacherId);
+                if (teacher != null)
+                {
+                    context.Teachers.Remove(teacher);
+                    context.SaveChanges();
+                    Console.WriteLine("Teacher removed successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Teacher not found.");
+                }
+            }
+        }
+
+        static void DeleteStudent()
+        {
+            using (var context = new AttendanceDbContext())
+            {
+                ListStudents(); // Display the list of students first
+                Console.Write("Enter the ID of the student to remove: ");
+                int studentId = int.Parse(Console.ReadLine());
+
+                var student = context.Students.FirstOrDefault(s => s.Id == studentId);
+                if (student != null)
+                {
+                    context.Students.Remove(student);
+                    context.SaveChanges();
+                    Console.WriteLine("Student removed successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Student not found.");
+                }
+            }
+        }
+
+
+
+
+        static void DeleteCourse()
+        {
+            using (var context = new AttendanceDbContext())
+            {
+                Console.Write("Enter course ID to delete: ");
+                int courseId = int.Parse(Console.ReadLine());
+
+                var course = context.Courses.FirstOrDefault(c => c.Id == courseId);
+
+                if (course != null)
+                {
+                    context.Courses.Remove(course);
+                    context.SaveChanges();
+                    Console.WriteLine("Course deleted successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Course not found.");
+                }
+            }
+            ShowAdminMenu();
+        }
     }
-
-
-
 }
