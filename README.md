@@ -42,10 +42,15 @@ cd attendance-system
 ## Screenshots
 
 ### Admin Panel
+
+
 Admin Panel for managing users and courses.
 
 ### Teacher Panel
 Teacher Panel for taking attendance.
+
+![AttendanceSystemgif](https://github.com/isomer04/AttendanceSystem/assets/43922158/bab5e63d-ad68-4621-a68d-05977a8b6be6)
+
 
 ### Student Panel
 Student Panel for giving attendance.
