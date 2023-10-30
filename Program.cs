@@ -171,7 +171,7 @@ namespace AttendanceSystem
             }
         }
 
-        static void ShowStudentMenu(User loggedInUser)
+/*        static void ShowStudentMenu(User loggedInUser)
         {
             Student student = GetStudentByUsername(loggedInUser.Username);
 
@@ -200,7 +200,7 @@ namespace AttendanceSystem
             {
                 Console.WriteLine("User is not a student.");
             }
-        }
+        }*/
 
         static void CreateTeacher()
         {
@@ -515,7 +515,7 @@ namespace AttendanceSystem
 
         }
 
-        static void GiveAttendance(Student student)
+/*        static void GiveAttendance(Student student)
         {
             using (var context = new AttendanceDbContext())
             {
@@ -587,7 +587,7 @@ namespace AttendanceSystem
                     Console.WriteLine("Invalid course ID.");
                 }
             }
-        }
+        }*/
 
         static Teacher GetTeacherByUsername(string username)
         {
@@ -597,13 +597,13 @@ namespace AttendanceSystem
             }
         }
 
-        static Student GetStudentByUsername(string username)
+      /*  static Student GetStudentByUsername(string username)
         {
             using (var context = new AttendanceDbContext())
             {
                 return context.Students.FirstOrDefault(s => s.Username == username);
             }
-        }
+        }*/
 
 
 
