@@ -109,20 +109,27 @@ namespace AttendanceSystem.Services
                 Console.Write("Enter password: ");
                 string password = Console.ReadLine();
 
-                var teacher = new Teacher
+                // Generate salt
+                string salt = PasswordHasher.GenerateSalt();
+
+                // Hash the password using the generated salt
+                string hashedPassword = PasswordHasher.ComputeHash(password, salt);
+
+                var teacher = new User
                 {
                     Name = name,
                     Username = username,
-                    Password = password
+                    Password = hashedPassword,
+                    // Store salt or additional properties specific to teachers
+                    // UserType = UserType.Teacher // Assuming UserType is set here
                 };
 
-                context.Teachers.Add(teacher);
+                context.Users.Add(teacher);
                 context.SaveChanges();
 
-                Console.WriteLine("Teacher created successfully.  \n");
+                Console.WriteLine("Teacher created successfully.\n");
             }
             ShowAdminMenu();
-
         }
 
         static void CreateStudent()
@@ -138,20 +145,27 @@ namespace AttendanceSystem.Services
                 Console.Write("Enter password: ");
                 string password = Console.ReadLine();
 
-                var student = new Student
+                // Generate salt
+                string salt = PasswordHasher.GenerateSalt();
+
+                // Hash the password using the generated salt
+                string hashedPassword = PasswordHasher.ComputeHash(password, salt);
+
+                var student = new User
                 {
                     Name = name,
                     Username = username,
-                    Password = password
+                    Password = hashedPassword,
+                    // Store salt or additional properties specific to students
+                    // UserType = UserType.Student // Assuming UserType is set here
                 };
 
-                context.Students.Add(student);
+                context.Users.Add(student);
                 context.SaveChanges();
 
                 Console.WriteLine("Student created successfully.");
             }
             ShowAdminMenu();
-
         }
 
         static void CreateCourse()
