@@ -657,8 +657,6 @@ namespace AttendanceSystem.Services
         }
 
 
-
-
         static void DeleteCourse()
         {
             using (var context = new AttendanceDbContext())
