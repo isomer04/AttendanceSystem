@@ -1,5 +1,6 @@
 ﻿using AttendanceSystem.Data;
 using AttendanceSystem.Entities;
+using AttendanceSystem.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
@@ -9,6 +10,11 @@ namespace AttendanceSystem
     {
         static void Main(string[] args)
         {
+
+/*            AdminService adminService = new AdminService();
+            StudentService studentService = new StudentService();
+            TeacherService  teacherService = new TeacherService();*/
+
             User loggedInUser = AuthenticateUser();
 
             if (loggedInUser != null)
@@ -17,15 +23,16 @@ namespace AttendanceSystem
 
                 if (loggedInUser is Admin)
                 {
-                    ShowAdminMenu();
+
+                    AdminService.ShowAdminMenu();
                 }
                 else if (loggedInUser is Teacher)
                 {
-                    ShowTeacherMenu((Teacher)loggedInUser);
+                    TeacherService.ShowTeacherMenu((Teacher)loggedInUser);
                 }
                 else if (loggedInUser is Student)
                 {
-                    ShowStudentMenu((Student)loggedInUser);
+                    StudentService.ShowStudentMenu((Student)loggedInUser);
                 }
                 else
                 {
@@ -57,7 +64,7 @@ namespace AttendanceSystem
             }
         }
 
-        static void ShowAdminMenu()
+/*        static void ShowAdminMenu()
         {
             Console.WriteLine("\nAdmin Menu");
             Console.WriteLine("1. Create Teacher");
@@ -137,10 +144,10 @@ namespace AttendanceSystem
                     Console.WriteLine("Invalid choice.");
                     break;
             }
-        }
+        }*/
 
 
-        static void ShowTeacherMenu(User loggedInUser)
+/*        static void ShowTeacherMenu(User loggedInUser)
         {
             Teacher teacher = GetTeacherByUsername(loggedInUser.Username);
 
@@ -169,7 +176,7 @@ namespace AttendanceSystem
             {
                 Console.WriteLine("User is not a teacher.");
             }
-        }
+        }*/
 
 /*        static void ShowStudentMenu(User loggedInUser)
         {
@@ -202,7 +209,7 @@ namespace AttendanceSystem
             }
         }*/
 
-        static void CreateTeacher()
+  /*      static void CreateTeacher()
         {
             using (var context = new AttendanceDbContext())
             {
@@ -475,9 +482,9 @@ namespace AttendanceSystem
             }
 
             ShowAdminMenu();
-        }
+        }*/
 
-        static void CheckAttendanceReports(Teacher teacher)
+/*        static void CheckAttendanceReports(Teacher teacher)
         {
             using (var context = new AttendanceDbContext())
             {
@@ -513,7 +520,7 @@ namespace AttendanceSystem
                 }
             }
 
-        }
+        }*/
 
 /*        static void GiveAttendance(Student student)
         {
@@ -589,7 +596,7 @@ namespace AttendanceSystem
             }
         }*/
 
-        static Teacher GetTeacherByUsername(string username)
+/*        static Teacher GetTeacherByUsername(string username)
         {
             using (var context = new AttendanceDbContext())
             {
@@ -597,19 +604,19 @@ namespace AttendanceSystem
             }
         }
 
-      /*  static Student GetStudentByUsername(string username)
-        {
-            using (var context = new AttendanceDbContext())
+         static Student GetStudentByUsername(string username)
             {
-                return context.Students.FirstOrDefault(s => s.Username == username);
-            }
-        }*/
+                using (var context = new AttendanceDbContext())
+                {
+                    return context.Students.FirstOrDefault(s => s.Username == username);
+                }
+            }*/
 
 
 
 
 
-        static void ListCourses()
+      /*  static void ListCourses()
         {
             using (var context = new AttendanceDbContext())
             {
@@ -917,6 +924,6 @@ namespace AttendanceSystem
                 }
             }
             ShowAdminMenu();
-        }
+        }*/
     }
 }

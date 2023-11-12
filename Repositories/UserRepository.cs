@@ -17,5 +17,16 @@ namespace AttendanceSystem.Repositories
                 return context.Students.FirstOrDefault(s => s.Username == username);
             }
         }
+
+
+       public static Teacher GetTeacherByUsername(string username)
+        {
+            using (var context = new AttendanceDbContext())
+            {
+                return context.Teachers.FirstOrDefault(t => t.Username == username);
+            }
+        }
+
+     
     }
 }

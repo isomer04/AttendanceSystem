@@ -12,7 +12,7 @@ namespace AttendanceSystem.Services
     internal class StudentService
     {
 
-        static void ShowStudentMenu(User loggedInUser)
+       public static void ShowStudentMenu(User loggedInUser)
         {
             Student student = UserRepository.GetStudentByUsername(loggedInUser.Username);
 
